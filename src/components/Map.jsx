@@ -33,7 +33,7 @@ function Map({ filteredData }) {
     <MapContainer
       center={center}
       zoom={3.5}
-      style={{ width: "55vw", height: "75vh", backgroundColor: "#0000" }}
+      style={{ width: "49.8vw", height: "75vh", backgroundColor: "#0000" }}
       zoomControl={false}
       attributionControl={false}
     >

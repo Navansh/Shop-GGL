@@ -6,6 +6,7 @@ import Map from "../components/Map";
 import "../components/styles.css";
 import { GrFilter } from "react-icons/gr";
 import data from "../components/testData";
+import TestMap from "../components/TestMap"
 
 // loading thing for fast react fetching
 
@@ -15,11 +16,6 @@ function Dash() {
   const [year, setYear] = useState("");
   const [week, setWeek] = useState("");
   const [apiData, setApiData] = useState([]);
-  // const [values, setValues] = useState({
-  //   totalSales: -1,
-  //   wow: -1,
-  //   targetAch: -1,
-  // });
 
   const [totalSales, setTotalSales] = useState(-1);
   const [wow, setWow] = useState(-1);
@@ -31,37 +27,36 @@ function Dash() {
     // console.log(apiData);
   }, []);
 
-  // let filteredData = [];
-
   useEffect(() => {
     if (carrier && device && year && week) {
-      setFilteredData(
+      const localFilter =
         apiData &&
-          apiData.filter(
-            (tuple) =>
-              tuple.week === parseInt(week) &&
-              tuple.year === parseInt(year) &&
-              tuple.Product_Model === device &&
-              tuple.chain_name.includes(carrier, 1)
-          )
-      );
-      console.log(filteredData);
+        apiData.filter((tuple) => {
+          return (
+            tuple.week === parseInt(week) &&
+            tuple.year === parseInt(year) &&
+            tuple.Product_Model === device &&
+            tuple.Retailer === carrier
+          );
+        });
 
-      const sumAcutalSellout = filteredData
+      setFilteredData(localFilter);
+
+      // console.log(localFilter);
+
+      const sumAcutalSellout = localFilter
         .filter((item) => item.Actual_Sellout !== undefined)
         .map((item) => parseInt(item.Actual_Sellout, 10))
         .reduce((acc, curr) => acc + curr, 0);
 
-      // setValues({ ...values, totalSales: sumAcutalSellout });
       setTotalSales(sumAcutalSellout);
 
-      const sumTarget = filteredData
+      const sumTarget = localFilter
         .filter((item) => item.Target !== undefined)
-        .map((item) => parseInt(item.Target, 10))
+        .map((item) => parseFloat(item.Target, 10))
         .reduce((acc, curr) => acc + curr, 0);
 
-      // setValues({ ...values, targetAch: (sumAcutalSellout / sumTarget) * 100 })
-      setTargetAch((sumAcutalSellout / sumTarget) * 100);
+      setTargetAch(((sumAcutalSellout / sumTarget) * 100).toFixed(4));
 
       const sumPreSellout = apiData
         .filter(
@@ -69,23 +64,13 @@ function Dash() {
             tuple.week === parseInt(week) - 1 &&
             tuple.year === parseInt(year) &&
             tuple.Product_Model === device &&
-            tuple.chain_name.includes(carrier, 1)
+            tuple.Retailer === carrier
         )
         .map((item) => parseInt(item.Actual_Sellout))
         .reduce((acc, curr) => curr + acc, 0);
 
-      // setValues({ ...values, wow: (sumAcutalSellout / sumPreSellout) * 100 });
-      setWow((sumAcutalSellout / sumPreSellout) * 100);
+      setWow(((sumAcutalSellout / sumPreSellout) * 100).toFixed(4));
     }
-    // console.log(apiData);
-    // let filteredData = apiData.filter(() => {
-    //   tuple;
-    //   // return (
-    //   //   // tuple.chain_name.includes(carrier, 1) && tuple.Product_model === device
-    //   //   tuple
-    //   // );
-    // });
-    // console.log(filteredData);
   }, [carrier, device, year, week, apiData]);
 
   // let apiData = [];
@@ -93,7 +78,7 @@ function Dash() {
   // const getData = async () => {
   //   try {
   //     const res = await fetch(
-  //       "https://script.googleusercontent.com/macros/echo?user_content_key=cPgOYf8JYX-jeXLVOyYJR4Drx1WMMFRxvQgXsZSFO2gQRoZxDyL9RSNH1uEJXwmH0onlXnmxWzdZ5Agmf-PRO1lRe_CTIhSsm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnOptTkAkfT00XUELqQQ0A7ryNqvp-2ylB4zwrfVmltecnV2bAbXGNMVAv6IMS_j6YDDyAC_aH6Jf8Hh-laR9ucSvru7BhmMUZNz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
+  //       "https://script.googleusercontent.com/macros/echo?user_content_key=JmAjbwcwCuxscKS5A0vvn_VpxnnYn4u-imHWi-YNZNel2NN78BsOlOI3baNdSC_t-x_WHdYH7deWk1bGoeLJ3tLivHhYgw_5m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnOptTkAkfT00XUELqQQ0A7ryNqvp-2ylB4zwrfVmltecnV2bAbXGNMVAv6IMS_j6YDDyAC_aH6Jf8Hh-laR9ucSvru7BhmMUZNz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
   //     );
   //     const data = await res.json();
   //     setApiData(data.data);
@@ -103,7 +88,7 @@ function Dash() {
   // };
 
   const getData = () => {
-    setApiData(data.data);
+    setApiData(data);
   };
   const handleYearChange = async (e) => {
     setYear(e.target.value);
@@ -192,7 +177,7 @@ function Dash() {
               </div>
             </div>
             <div className="mapDiv">
-              <Map filteredData={filteredData} />
+              <TestMap filteredData={filteredData} />
             </div>
           </div>
         </div>

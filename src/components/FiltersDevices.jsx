@@ -16,7 +16,7 @@ function FiltersD({ changeDevice }) {
   return (
     <>
       <div className="deviceBox">
-        <h3 style={{ paddingLeft: "25px" }}>Choose Devices</h3>
+        <h4 style={{ paddingLeft: "25px" }}>Choose Devices</h4>
 
         <div className="carrierOptionsBox">
           <div className="carrierOption" onClick={handleClick}>
@@ -74,7 +74,7 @@ function FiltersD({ changeDevice }) {
             <img
               src={P7pro}
               className="carrierImage"
-              alt="Pixel-7pro"
+              alt="Pixel 7 Pro"
               style={
                 activeDev === "Pixel 7 Pro"
                   ? {
@@ -93,9 +93,6 @@ function FiltersD({ changeDevice }) {
 }
 
 export default FiltersD;
-
-
-
 
 // pixel 7 ->3
 // 7pro -> 2

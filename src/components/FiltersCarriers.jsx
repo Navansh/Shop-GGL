@@ -8,14 +8,14 @@ function FiltersC({ changeCarrier }) {
   const [activeCarr, setActiveCarr] = useState("");
 
   const handleClick = (e) => {
-    // console.log(e.target.alt);
+    console.log(e.target.alt);
     setActiveCarr(e.target.alt);
     changeCarrier(e.target.alt);
   };
   return (
     <>
       <div className="carrierBox">
-        <h3 style={{ paddingLeft: "25px" }}>Choose Carrier</h3>
+        <h4 style={{ paddingLeft: "25px" }}>Choose Carrier</h4>
 
         <div className="carrierOptionsBox">
           <div className="carrierOption">
@@ -40,7 +40,7 @@ function FiltersC({ changeCarrier }) {
           <div className="carrierOption" onClick={handleClick}>
             <img
               style={
-                activeCarr === "AT&T"
+                activeCarr === "ATT"
                   ? {
                       border: "solid 2px blue",
                       width: "100%",
@@ -50,8 +50,9 @@ function FiltersC({ changeCarrier }) {
               }
               src={ATT}
               className="carrierImage"
-              alt="AT&T"
+              alt="ATT"
             />
+
           </div>
 
           <div className="carrierOption" onClick={handleClick}>
